@@ -3,6 +3,9 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { errorHandler } from './middlewares/index.js';
 import authRoutes from './routes/authRoutes.js';
+import courseRoutes from './routes/courseRoutes.js';
+import enrollmentRoutes from './routes/enrollmentRoutes.js';
+import commentRoutes from './routes/commentRoutes.js';
 
 /**
  * Express application setup
@@ -39,6 +42,9 @@ app.get('/health', (req, res) => {
 
 // API routes
 app.use('/api/auth', authRoutes);
+app.use('/api/courses', courseRoutes);
+app.use('/api/enrollments', enrollmentRoutes);
+app.use('/api/lessons/:lessonId', commentRoutes);
 
 // 5. 404 handler for undefined routes
 app.use((req, res) => {

@@ -86,37 +86,37 @@
 
 ### Contract Tests for Authentication (⚠️ Write tests FIRST)
 
-- [ ] T028 [P] Create tests/contract/test_auth_register.js: Test POST /auth/register with valid/invalid inputs (201, 400, 409)
-- [ ] T029 [P] Create tests/contract/test_auth_login.js: Test POST /auth/login with valid/invalid credentials (200, 401, 400)
-- [ ] T030 [P] Create tests/contract/test_auth_refresh.js: Test POST /auth/refresh with valid/invalid tokens (200, 401)
+- [x] T028 [P] Create tests/contract/test_auth_register.js: Test POST /auth/register with valid/invalid inputs (201, 400, 409)
+- [x] T029 [P] Create tests/contract/test_auth_login.js: Test POST /auth/login with valid/invalid credentials (200, 401, 400)
+- [x] T030 [P] Create tests/contract/test_auth_refresh.js: Test POST /auth/refresh with valid/invalid tokens (200, 401)
 
 ### Validators for Authentication
 
-- [ ] T031 Create src/validators/auth.js: Joi schemas for register (name/email/password/role) and login (email/password) with error messages
+- [x] T031 Create src/validators/auth.js: Joi schemas for register (name/email/password/role) and login (email/password) with error messages
 
 ### Authentication Endpoints Implementation
 
-- [ ] T032 Create src/controllers/authController.js with register(req, res) handler:
+- [x] T032 Create src/controllers/authController.js with register(req, res) handler:
   - Validate input via Joi
   - Hash password with bcrypt (rounds: 10)
   - Create User model instance
   - Generate JWT token
   - Return 201 with token + user data
-- [ ] T033 Create src/controllers/authController.js with login(req, res) handler:
+- [x] T033 Create src/controllers/authController.js with login(req, res) handler:
   - Find user by email
   - Compare password with bcrypt.compare()
   - Generate JWT token on match
   - Return 200 with token + user data or 401
-- [ ] T034 Create src/controllers/authController.js with refresh(req, res) handler:
+- [x] T034 Create src/controllers/authController.js with refresh(req, res) handler:
   - Verify current token from Authorization header
   - Generate new token from decoded userId/role
   - Return 200 with new token or 401
-- [ ] T035 Create src/routes/authRoutes.js: Define POST /auth/register, POST /auth/login, POST /auth/refresh routes (no middleware on register/login, authenticate on refresh)
-- [ ] T036 Mount authRoutes in src/app.js under /api/auth prefix
+- [x] T035 Create src/routes/authRoutes.js: Define POST /auth/register, POST /auth/login, POST /auth/refresh routes (no middleware on register/login, authenticate on refresh)
+- [x] T036 Mount authRoutes in src/app.js under /api/auth prefix
 
 **Integration Tests for Authentication**
 
-- [ ] T037 Create tests/integration/test_auth_flow.js: Full registration → login → token usage → refresh flow
+- [x] T037 Create tests/integration/test_auth_flow.js: Full registration → login → token usage → refresh flow
 
 **Checkpoint**: Users can register, login, receive JWT, and use token to access protected endpoints ✅
 
@@ -134,42 +134,42 @@
 
 ### Contract Tests for Courses (⚠️ Write tests FIRST)
 
-- [ ] T038 [P] Create tests/contract/test_courses_create.js: Test POST /courses with valid/invalid data, instructor/student roles (201, 400, 401, 403)
-- [ ] T039 [P] Create tests/contract/test_courses_list.js: Test GET /courses with pagination, filters, sorting (200 with paginated results)
-- [ ] T040 [P] Create tests/contract/test_courses_get.js: Test GET /courses/:courseId for valid/invalid IDs (200, 404, 400)
-- [ ] T041 [P] Create tests/contract/test_courses_update.js: Test PUT /courses/:courseId with owner/other instructor/student (200, 403, 401)
+- [x] T038 [P] Create tests/contract/test_courses_create.js: Test POST /courses with valid/invalid data, instructor/student roles (201, 400, 401, 403)
+- [x] T039 [P] Create tests/contract/test_courses_list.js: Test GET /courses with pagination, filters, sorting (200 with paginated results)
+- [x] T040 [P] Create tests/contract/test_courses_get.js: Test GET /courses/:courseId for valid/invalid IDs (200, 404, 400)
+- [x] T041 [P] Create tests/contract/test_courses_update.js: Test PUT /courses/:courseId with owner/other instructor/student (200, 403, 401)
 
 ### Validators for Courses
 
-- [ ] T042 Create src/validators/course.js: Joi schemas for create (title, description, category, optional) and update (all fields optional) with error messages
+- [x] T042 Create src/validators/course.js: Joi schemas for create (title, description, category, optional) and update (all fields optional) with error messages
 
 ### Course Endpoints Implementation
 
-- [ ] T043 Create src/controllers/courseController.js with create(req, res) handler:
+- [x] T043 Create src/controllers/courseController.js with create(req, res) handler:
   - Authenticate + authorize (Instructor/Admin only via middleware)
   - Validate input via Joi
   - Create Course instance with instructorId from req.user.userId
   - Save to MongoDB
   - Return 201 with course data
-- [ ] T044 Create src/controllers/courseController.js with list(req, res) handler:
+- [x] T044 Create src/controllers/courseController.js with list(req, res) handler:
   - Accept query params: page (default 1), limit (default 10, max 50), sortBy, order
   - Query Course.find() with pagination
   - Return 200 with paginated array + total count
-- [ ] T045 Create src/controllers/courseController.js with get(req, res) handler:
+- [x] T045 Create src/controllers/courseController.js with get(req, res) handler:
   - Validate courseId format (MongoDB ObjectId)
   - Find and return 200 or 404
-- [ ] T046 Create src/controllers/courseController.js with update(req, res) handler:
+- [x] T046 Create src/controllers/courseController.js with update(req, res) handler:
   - Authenticate (all users)
   - Authorize (course owner or admin only)
   - Validate input via Joi (partial validation for update)
   - Update Course instance
   - Return 200 with updated data or 403
-- [ ] T047 Create src/routes/courseRoutes.js: Define POST /courses (private), GET /courses (public), GET /courses/:courseId (public), PUT /courses/:courseId (private) routes
-- [ ] T048 Mount courseRoutes in src/app.js under /api/courses prefix
+- [x] T047 Create src/routes/courseRoutes.js: Define POST /courses (private), GET /courses (public), GET /courses/:courseId (public), PUT /courses/:courseId (private) routes
+- [x] T048 Mount courseRoutes in src/app.js under /api/courses prefix
 
 **Integration Tests for Courses**
 
-- [ ] T049 Create tests/integration/test_courses_flow.js: Instructor creates course → student lists courses → student views details
+- [x] T049 Create tests/integration/test_courses_flow.js: Instructor creates course → student lists courses → student views details
 
 **Checkpoint**: Instructors can create/update courses, students can view course catalog with pagination ✅
 
@@ -187,18 +187,18 @@
 
 ### Contract Tests for Enrollments (⚠️ Write tests FIRST)
 
-- [ ] T050 [P] Create tests/contract/test_enrollments_create.js: Test POST /enrollments with valid course/already enrolled/non-existent course (201, 409, 404, 401)
-- [ ] T051 [P] Create tests/contract/test_enrollments_list.js: Test GET /enrollments/my-courses for student (200 with student's enrollments)
-- [ ] T052 [P] Create tests/contract/test_enrollments_get.js: Test GET /enrollments/:enrollmentId for own/other enrollment (200, 403, 404)
-- [ ] T053 [P] Create tests/contract/test_enrollments_delete.js: Test DELETE /enrollments/:enrollmentId for own/other (200, 403, 404)
+- [x] T050 [P] Create tests/contract/test_enrollments_create.js: Test POST /enrollments with valid course/already enrolled/non-existent course (201, 409, 404, 401)
+- [x] T051 [P] Create tests/contract/test_enrollments_list.js: Test GET /enrollments/my-courses for student (200 with student's enrollments)
+- [x] T052 [P] Create tests/contract/test_enrollments_get.js: Test GET /enrollments/:enrollmentId for own/other enrollment (200, 403, 404)
+- [x] T053 [P] Create tests/contract/test_enrollments_delete.js: Test DELETE /enrollments/:enrollmentId for own/other (200, 403, 404)
 
 ### Validators for Enrollments
 
-- [ ] T054 Create src/validators/enrollment.js: Joi schema for enroll (courseId required, MongoDB ObjectId format)
+- [x] T054 Create src/validators/enrollment.js: Joi schema for enroll (courseId required, MongoDB ObjectId format)
 
 ### Enrollment Endpoints Implementation
 
-- [ ] T055 Create src/controllers/enrollmentController.js with enroll(req, res) handler:
+- [x] T055 Create src/controllers/enrollmentController.js with enroll(req, res) handler:
   - Authenticate required
   - Validate courseId via Joi
   - Check if course exists (404 if not)
@@ -206,28 +206,28 @@
   - Create Enrollment instance with studentId from req.user.userId
   - Save to MongoDB
   - Return 201 with enrollment data
-- [ ] T056 Create src/controllers/enrollmentController.js with listMyEnrollments(req, res) handler:
+- [x] T056 Create src/controllers/enrollmentController.js with listMyEnrollments(req, res) handler:
   - Authenticate required
   - Query Enrollments where studentId = req.user.userId
   - Populate course details via Mongoose populate()
   - Accept pagination params (page, limit)
   - Return 200 with paginated enrollments
-- [ ] T057 Create src/controllers/enrollmentController.js with getEnrollment(req, res) handler:
+- [x] T057 Create src/controllers/enrollmentController.js with getEnrollment(req, res) handler:
   - Authenticate required
   - Authorize (own enrollment or admin)
   - Find Enrollment by ID, populate course + student details
   - Return 200 or 403/404
-- [ ] T058 Create src/controllers/enrollmentController.js with unenroll(req, res) handler:
+- [x] T058 Create src/controllers/enrollmentController.js with unenroll(req, res) handler:
   - Authenticate required
   - Authorize (own enrollment or admin)
   - Delete Enrollment by ID
   - Return 200 with deletion confirmation or 403/404
-- [ ] T059 Create src/routes/enrollmentRoutes.js: Define POST /enrollments (private), GET /enrollments/my-courses (private), GET /enrollments/:enrollmentId (private), DELETE /enrollments/:enrollmentId (private)
-- [ ] T060 Mount enrollmentRoutes in src/app.js under /api/enrollments prefix
+- [x] T059 Create src/routes/enrollmentRoutes.js: Define POST /enrollments (private), GET /enrollments/my-courses (private), GET /enrollments/:enrollmentId (private), DELETE /enrollments/:enrollmentId (private)
+- [x] T060 Mount enrollmentRoutes in src/app.js under /api/enrollments prefix
 
 **Integration Tests for Enrollments**
 
-- [ ] T061 Create tests/integration/test_enrollments_flow.js: Student enrolls → views own enrollments → unenroll → verify gone
+- [x] T061 Create tests/integration/test_enrollments_flow.js: Student enrolls → views own enrollments → unenroll → verify gone
 
 **Checkpoint**: Students can enroll/view/manage course enrollments with duplicate prevention ✅
 
@@ -245,16 +245,16 @@
 
 ### Contract Tests for Lessons (⚠️ Write tests FIRST)
 
-- [ ] T062 [P] Create tests/contract/test_lessons_create.js: Test POST /courses/:courseId/lessons for owner/other instructor/student (201, 403, 401)
-- [ ] T063 [P] Create tests/contract/test_lessons_list.js: Test GET /courses/:courseId/lessons with sorting by position (200 with lessons sorted)
+- [x] T062 [P] Create tests/contract/test_lessons_create.js: Test POST /courses/:courseId/lessons for owner/other instructor/student (201, 403, 401)
+- [x] T063 [P] Create tests/contract/test_lessons_list.js: Test GET /courses/:courseId/lessons with sorting by position (200 with lessons sorted)
 
 ### Validators for Lessons
 
-- [ ] T064 Create src/validators/lesson.js: Joi schemas for create (title, content, position all required, position > 0)
+- [x] T064 Create src/validators/lesson.js: Joi schemas for create (title, content, position all required, position > 0)
 
 ### Lesson Endpoints Implementation
 
-- [ ] T065 Create src/controllers/lessonController.js with create(req, res) handler:
+- [x] T065 Create src/controllers/lessonController.js with create(req, res) handler:
   - Authenticate required
   - Validate courseId format
   - Find course and verify instructor ownership (403 if not owner)
@@ -262,17 +262,17 @@
   - Create Lesson instance with courseId
   - Save to MongoDB (compound unique index prevents duplicate positions)
   - Return 201 with lesson data
-- [ ] T066 Create src/controllers/lessonController.js with listByCourse(req, res) handler:
+- [x] T066 Create src/controllers/lessonController.js with listByCourse(req, res) handler:
   - Query Lessons where courseId = :courseId
   - Sort by position ascending
   - Auto populate course instructor details
   - Return 200 with lessons array
-- [ ] T067 Create src/routes/lessonRoutes.js: Define POST /courses/:courseId/lessons (private), GET /courses/:courseId/lessons (public)
-- [ ] T068 Mount lessonRoutes in src/app.js under /api/courses/ prefix
+- [x] T067 Create src/routes/lessonRoutes.js: Define POST /courses/:courseId/lessons (private), GET /courses/:courseId/lessons (public)
+- [x] T068 Mount lessonRoutes in src/app.js under /api/courses/ prefix
 
 **Integration Tests for Lessons**
 
-- [ ] T069 Create tests/integration/test_lessons_flow.js: Instructor creates course → adds lessons → student views lessons ordered
+- [x] T069 Create tests/integration/test_lessons_flow.js: Instructor creates course → adds lessons → student views lessons ordered
 
 **Checkpoint**: Instructors can add lessons to courses, lessons appear ordered by position for all users ✅
 
@@ -290,16 +290,16 @@
 
 ### Contract Tests for Comments (⚠️ Write tests FIRST)
 
-- [ ] T070 [P] Create tests/contract/test_comments_create.js: Test POST /lessons/:lessonId/comments for student/instructor (201, 403)
-- [ ] T071 [P] Create tests/contract/test_comments_list.js: Test GET /lessons/:lessonId/comments with pagination, newest-first (200 with paginated comments)
+- [x] T070 [P] Create tests/contract/test_comments_create.js: Test POST /lessons/:lessonId/comments for student/instructor (201, 403)
+- [x] T071 [P] Create tests/contract/test_comments_list.js: Test GET /lessons/:lessonId/comments with pagination, newest-first (200 with paginated comments)
 
 ### Validators for Comments
 
-- [ ] T072 Create src/validators/comment.js: Joi schema for create (content required, 1-500 chars)
+- [x] T072 Create src/validators/comment.js: Joi schema for create (content required, 1-500 chars)
 
 ### Comment Endpoints Implementation
 
-- [ ] T073 Create src/controllers/commentController.js with create(req, res) handler:
+- [x] T073 Create src/controllers/commentController.js with create(req, res) handler:
   - Authenticate required (students only via authorize middleware)
   - Validate lessonId format
   - Check if lesson exists (404 if not)
@@ -307,18 +307,18 @@
   - Create Comment instance with studentId from req.user.userId, lessonId
   - Save to MongoDB
   - Return 201 with comment data
-- [ ] T074 Create src/controllers/commentController.js with list(req, res) handler:
+- [x] T074 Create src/controllers/commentController.js with list(req, res) handler:
   - Query Comments where lessonId = :lessonId
   - Populate student name/email details
   - Sort by createdAt descending (newest first)
   - Accept pagination params (page, limit)
   - Return 200 with paginated comments
-- [ ] T075 Create src/routes/commentRoutes.js: Define POST /lessons/:lessonId/comments (private), GET /lessons/:lessonId/comments (public)
-- [ ] T076 Mount commentRoutes in src/app.js under /api/lessons/ prefix
+- [x] T075 Create src/routes/commentRoutes.js: Define POST /lessons/:lessonId/comments (private), GET /lessons/:lessonId/comments (public)
+- [x] T076 Mount commentRoutes in src/app.js under /api/lessons/ prefix
 
 **Integration Tests for Comments**
 
-- [ ] T077 Create tests/integration/test_comments_flow.js: Student comments on lesson → views list ordered newest-first
+- [x] T077 Create tests/integration/test_comments_flow.js: Student comments on lesson → views list ordered newest-first
 
 **Checkpoint**: Students can comment on lessons, comments display in reverse chronological order ✅
 

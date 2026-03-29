@@ -1,8 +1,7 @@
 import Joi from 'joi';
 
 /**
- * Authentication validation schemas
- * Defines Joi schemas for request validation across all auth endpoints
+ * Authentication validation schemas (register, login, refresh)
  */
 
 const registerSchema = Joi.object({
