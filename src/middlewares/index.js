@@ -3,8 +3,6 @@
  * Central location for all middleware modules
  */
 
-const errorHandler = require('./errorHandler');
+import errorHandler from './errorHandler.js';
 
-module.exports = {
-  errorHandler,
-};
+export { errorHandler };

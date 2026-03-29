@@ -1,0 +1,521 @@
+{
+  "info": {
+    "_postman_id": "online-course-platform-backend",
+    "name": "Online Course Platform Backend API",
+    "description": "REST API for Online Course Platform - Phase 0 Foundation\n\n**Status**: Phase 0 (Foundation)\n- ✅ Health Check endpoint implemented\n- 🟨 Other endpoints ready for Phase 1+ implementation\n\n**Base URL**: http://localhost:5000/api\n\n**Authentication**: JWT Token (except /auth/register, /auth/login, /health)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "online-course-backend-001"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Server Health",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response has status ok\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql(\"ok\");",
+                  "});",
+                  "pm.test(\"Response has timestamp\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('timestamp');",
+                  "});",
+                  "pm.test(\"Response has uptime\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('uptime');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            },
+            "description": "Check server health status\n\n**Status**: ✅ IMPLEMENTED\n\n**Expected Response** (200 OK):\n```json\n{\n  \"status\": \"ok\",\n  \"timestamp\": \"2026-03-29T10:30:45.123Z\",\n  \"uptime\": 125.456\n}\n```"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"Response has success flag\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.eql(true);",
+                  "});",
+                  "pm.test(\"Response has JWT token\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('token');",
+                  "    pm.environment.set('jwtToken', jsonData.token);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ahmed Hassan\",\n  \"email\": \"ahmed@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"role\": \"Student\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Register a new user account (Instructor or Student)\n\n**Status**: 🟨 READY FOR PHASE 1 IMPLEMENTATION\n\n**Authorization**: None (public endpoint)\n\n**Request Body**:\n```json\n{\n  \"name\": \"string (2-100 chars, required)\",\n  \"email\": \"string (valid email, required, unique)\",\n  \"password\": \"string (min 8 chars, required)\",\n  \"role\": \"enum: 'Instructor' | 'Student' (required)\"\n}\n```\n\n**Expected Response** (201 Created):\n```json\n{\n  \"success\": true,\n  \"message\": \"User registered successfully\",\n  \"data\": {\n    \"id\": \"507f1f77bcf86cd799439011\",\n    \"name\": \"Ahmed Hassan\",\n    \"email\": \"ahmed@example.com\",\n    \"role\": \"Student\",\n    \"createdAt\": \"2026-03-29T10:30:45.123Z\"\n  },\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response has JWT token\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('token');",
+                  "    pm.environment.set('jwtToken', jsonData.token);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ahmed@example.com\",\n  \"password\": \"SecurePass123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Authenticate user and receive JWT token\n\n**Status**: 🟨 READY FOR PHASE 1 IMPLEMENTATION\n\n**Authorization**: None (public endpoint)\n\n**Request Body**:\n```json\n{\n  \"email\": \"string (valid email, required)\",\n  \"password\": \"string (required)\"\n}\n```\n\n**Expected Response** (200 OK):\n```json\n{\n  \"success\": true,\n  \"message\": \"Login successful\",\n  \"data\": {\n    \"id\": \"507f1f77bcf86cd799439011\",\n    \"name\": \"Ahmed Hassan\",\n    \"email\": \"ahmed@example.com\",\n    \"role\": \"Student\"\n  },\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n}\n```"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Courses",
+      "item": [
+        {
+          "name": "Create Course",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"Response has course ID\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('_id');",
+                  "    pm.environment.set('courseId', jsonData.data._id);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Introduction to Web Development\",\n  \"description\": \"Learn the fundamentals of HTML, CSS, and JavaScript for building modern web applications.\",\n  \"category\": \"Web Development\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses"]
+            },
+            "description": "Create a new course (Instructor only)\n\n**Status**: 🟨 READY FOR PHASE 1 IMPLEMENTATION\n\n**Authorization**: Bearer token required (Instructor role)\n\n**Request Body**:\n```json\n{\n  \"title\": \"string (5-200 chars, required)\",\n  \"description\": \"string (20-2000 chars, required)\",\n  \"category\": \"string (optional)\"\n}\n```\n\n**Expected Response** (201 Created):\n```json\n{\n  \"success\": true,\n  \"message\": \"Course created successfully\",\n  \"data\": {\n    \"_id\": \"507f1f77bcf86cd799439012\",\n    \"title\": \"Introduction to Web Development\",\n    \"description\": \"Learn the fundamentals...\",\n    \"instructorId\": \"507f1f77bcf86cd799439011\",\n    \"category\": \"Web Development\",\n    \"createdAt\": \"2026-03-29T10:30:45.123Z\",\n    \"updatedAt\": \"2026-03-29T10:30:45.123Z\"\n  }\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "List Courses",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response has courses array\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/courses?limit=10&offset=0",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of courses to return (default: 10)"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Number of courses to skip (default: 0)"
+                }
+              ]
+            },
+            "description": "Get list of all courses with pagination\n\n**Status**: 🟨 READY FOR PHASE 1 IMPLEMENTATION\n\n**Authorization**: Bearer token required\n\n**Query Parameters**:\n- `limit`: Number of results to return (default: 10)\n- `offset`: Number of results to skip (default: 0)\n\n**Expected Response** (200 OK):\n```json\n{\n  \"success\": true,\n  \"data\": [\n    {\n      \"_id\": \"507f1f77bcf86cd799439012\",\n      \"title\": \"Introduction to Web Development\",\n      \"description\": \"Learn the fundamentals...\",\n      \"instructorId\": \"507f1f77bcf86cd799439011\",\n      \"category\": \"Web Development\",\n      \"createdAt\": \"2026-03-29T10:30:45.123Z\"\n    }\n  ],\n  \"pagination\": {\n    \"limit\": 10,\n    \"offset\": 0,\n    \"total\": 5\n  }\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Course Details",
+          "event": [
+            {
+              "listen": "test",
+              "script": [
+                "pm.test(\"Status code is 200 OK\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "pm.test(\"Response has course data\", function () {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData.data).to.have.property('title');",
+                "});"
+              ]
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}"]
+            },
+            "description": "Get detailed information about a specific course\n\n**Status**: 🟨 READY FOR PHASE 1 IMPLEMENTATION\n\n**Authorization**: Bearer token required\n\n**URL Parameters**:\n- `courseId`: Course ID (ObjectId)\n\n**Expected Response** (200 OK):\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"_id\": \"507f1f77bcf86cd799439012\",\n    \"title\": \"Introduction to Web Development\",\n    \"description\": \"Learn the fundamentals...\",\n    \"instructorId\": \"507f1f77bcf86cd799439011\",\n    \"category\": \"Web Development\",\n    \"createdAt\": \"2026-03-29T10:30:45.123Z\",\n    \"updatedAt\": \"2026-03-29T10:30:45.123Z\"\n  }\n}\n```"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Lessons",
+      "item": [
+        {
+          "name": "Create Lesson",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"Response has lesson ID\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('_id');",
+                  "    pm.environment.set('lessonId', jsonData.data._id);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Introduction to HTML\",\n  \"content\": \"HTML (HyperText Markup Language) is the standard markup language for creating web pages. Learn the basics of HTML5...\",\n  \"position\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}/lessons",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}", "lessons"]
+            },
+            "description": "Add a new lesson to a course (Instructor only)\n\n**Status**: 🟨 READY FOR PHASE 1 IMPLEMENTATION\n\n**Authorization**: Bearer token required (Instructor of course)\n\n**URL Parameters**:\n- `courseId`: Course ID (ObjectId)\n\n**Request Body**:\n```json\n{\n  \"title\": \"string (required)\",\n  \"content\": \"string (required)\",\n  \"position\": \"number (lesson order, required)\"\n}\n```\n\n**Expected Response** (201 Created):\n```json\n{\n  \"success\": true,\n  \"message\": \"Lesson created successfully\",\n  \"data\": {\n    \"_id\": \"507f1f77bcf86cd799439013\",\n    \"title\": \"Introduction to HTML\",\n    \"content\": \"HTML (HyperText Markup Language)...\",\n    \"courseId\": \"507f1f77bcf86cd799439012\",\n    \"position\": 1,\n    \"createdAt\": \"2026-03-29T10:30:45.123Z\"\n  }\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Course Lessons",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response has lessons array\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}/lessons",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}", "lessons"]
+            },
+            "description": "Get all lessons for a specific course\n\n**Status**: 🟨 READY FOR PHASE 1 IMPLEMENTATION\n\n**Authorization**: Bearer token required\n\n**URL Parameters**:\n- `courseId`: Course ID (ObjectId)\n\n**Expected Response** (200 OK):\n```json\n{\n  \"success\": true,\n  \"data\": [\n    {\n      \"_id\": \"507f1f77bcf86cd799439013\",\n      \"title\": \"Introduction to HTML\",\n      \"content\": \"HTML (HyperText Markup Language)...\",\n      \"courseId\": \"507f1f77bcf86cd799439012\",\n      \"position\": 1,\n      \"createdAt\": \"2026-03-29T10:30:45.123Z\"\n    }\n  ]\n}\n```"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Enrollment",
+      "item": [
+        {
+          "name": "Enroll Student in Course",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"Response has enrollment ID\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('_id');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}/enroll",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}", "enroll"]
+            },
+            "description": "Enroll a student in a course (Student only)\n\n**Status**: 🟨 READY FOR PHASE 1 IMPLEMENTATION\n\n**Authorization**: Bearer token required (Student role)\n\n**URL Parameters**:\n- `courseId`: Course ID (ObjectId)\n\n**Request Body**: Empty object\n```json\n{}\n```\n\n**Expected Response** (201 Created):\n```json\n{\n  \"success\": true,\n  \"message\": \"Successfully enrolled in course\",\n  \"data\": {\n    \"_id\": \"507f1f77bcf86cd799439014\",\n    \"studentId\": \"507f1f77bcf86cd799439015\",\n    \"courseId\": \"507f1f77bcf86cd799439012\",\n    \"enrolledAt\": \"2026-03-29T10:30:45.123Z\",\n    \"progress\": 0\n  }\n}\n```\n\n**Error Response** (409 Conflict):\n```json\n{\n  \"success\": false,\n  \"error\": \"Student already enrolled in this course\",\n  \"code\": \"ALREADY_ENROLLED\"\n}\n```"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Add Comment to Lesson",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"Response has comment ID\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('_id');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Great explanation! This really helped me understand the basics of HTML.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/lessons/{{lessonId}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["lessons", "{{lessonId}}", "comments"]
+            },
+            "description": "Add a comment to a lesson (Student only)\n\n**Status**: 🟨 READY FOR PHASE 1 IMPLEMENTATION\n\n**Authorization**: Bearer token required (Student role)\n\n**URL Parameters**:\n- `lessonId`: Lesson ID (ObjectId)\n\n**Request Body**:\n```json\n{\n  \"content\": \"string (required)\"\n}\n```\n\n**Expected Response** (201 Created):\n```json\n{\n  \"success\": true,\n  \"message\": \"Comment added successfully\",\n  \"data\": {\n    \"_id\": \"507f1f77bcf86cd799439016\",\n    \"content\": \"Great explanation! This really helped...\",\n    \"studentId\": \"507f1f77bcf86cd799439015\",\n    \"lessonId\": \"507f1f77bcf86cd799439013\",\n    \"createdAt\": \"2026-03-29T10:30:45.123Z\"\n  }\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Lesson Comments",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response has comments array\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/lessons/{{lessonId}}/comments?limit=20&offset=0",
+              "host": ["{{baseUrl}}"],
+              "path": ["lessons", "{{lessonId}}", "comments"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Number of comments to return (default: 20)"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Number of comments to skip (default: 0)"
+                }
+              ]
+            },
+            "description": "Get all comments for a specific lesson\n\n**Status**: 🟨 READY FOR PHASE 1 IMPLEMENTATION\n\n**Authorization**: Bearer token required\n\n**URL Parameters**:\n- `lessonId`: Lesson ID (ObjectId)\n\n**Query Parameters**:\n- `limit`: Number of results to return (default: 20)\n- `offset`: Number of results to skip (default: 0)\n\n**Expected Response** (200 OK):\n```json\n{\n  \"success\": true,\n  \"data\": [\n    {\n      \"_id\": \"507f1f77bcf86cd799439016\",\n      \"content\": \"Great explanation! This really helped...\",\n      \"studentId\": \"507f1f77bcf86cd799439015\",\n      \"lessonId\": \"507f1f77bcf86cd799439013\",\n      \"createdAt\": \"2026-03-29T10:30:45.123Z\"\n    }\n  ],\n  \"pagination\": {\n    \"limit\": 20,\n    \"offset\": 0,\n    \"total\": 1\n  }\n}\n```"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "jwtToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "courseId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "lessonId",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

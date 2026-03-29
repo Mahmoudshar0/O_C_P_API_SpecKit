@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 /**
  * Database connection setup using Mongoose
@@ -37,7 +37,4 @@ const disconnectDB = async () => {
   }
 };
 
-module.exports = {
-  connectDB,
-  disconnectDB,
-};
+export { connectDB, disconnectDB };

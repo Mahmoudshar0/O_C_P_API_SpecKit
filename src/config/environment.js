@@ -1,5 +1,9 @@
 /* eslint-disable no-console */
 
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 /**
  * Environment configuration validation
  * Ensures all required environment variables are present at startup
@@ -43,6 +47,4 @@ const validateEnvironment = () => {
   };
 };
 
-module.exports = {
-  validateEnvironment,
-};
+export { validateEnvironment };
