@@ -5,28 +5,27 @@
  * Catches all errors and returns semantic HTTP responses with proper logging
  */
 
-const errorHandler = (err, req, res) => {
-  // Log error context
+const errorHandler = (err, req, res, _next) => {
   console.error('Error:', {
     message: err.message,
     stack: err.stack,
     path: req.path,
     method: req.method,
-    userId: req.userId || 'anonymous',
+    userId: req.user?.userId || req.userId || 'anonymous',
     timestamp: new Date().toISOString(),
   });
 
-  // Determine HTTP status code
   const statusCode = err.statusCode || err.status || 500;
   const message = err.message || 'Internal Server Error';
+  const errorCode = err.errorCode || err.code || 'INTERNAL_ERROR';
 
-  // Return semantic error response
   res.status(statusCode).json({
     success: false,
-    error: message,
-    code: err.code || 'INTERNAL_ERROR',
-    details: process.env.NODE_ENV === 'development' ? { stack: err.stack } : {},
-    timestamp: new Date().toISOString(),
+    error: errorCode,
+    message,
+    statusCode,
+    ...(err.details && { details: err.details }),
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
   });
 };
 
