@@ -4,13 +4,14 @@
 **Feature ID**: 002  
 **Feature Branch**: `002-core-api-development`  
 **Created**: March 29, 2026  
-**Status**: 🟨 Ready for Implementation  
+**Status**: 🟨 Ready for Implementation
 
 ## Executive Summary
 
 This specification covers **Phases 1-4 of the Online Course Platform Backend development**, encompassing requirement analysis through core feature implementation. The feature delivers a complete REST API backend built with Node.js, Express.js, and MongoDB, enabling an e-learning platform where instructors manage courses and students engage with educational content.
 
-**Scope**: 
+**Scope**:
+
 - Requirement Analysis & Planning (Phase 1)
 - System Design - Database & API Design (Phase 2)
 - Environment Setup - Dependencies & Project Structure (Phase 3)

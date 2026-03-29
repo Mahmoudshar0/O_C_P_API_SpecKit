@@ -1,7 +1,8 @@
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
-const { errorHandler } = require('./middlewares');
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+import { errorHandler } from './middlewares/index.js';
+import authRoutes from './routes/authRoutes.js';
 
 /**
  * Express application setup
@@ -36,6 +37,9 @@ app.get('/health', (req, res) => {
   });
 });
 
+// API routes
+app.use('/api/auth', authRoutes);
+
 // 5. 404 handler for undefined routes
 app.use((req, res) => {
   res.status(404).json({
@@ -50,4 +54,4 @@ app.use((req, res) => {
 // 6. Error handler (must be last)
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

@@ -6,12 +6,10 @@
  * Loads environment, initializes database, and starts Express server
  */
 
-// Load environment variables FIRST, before any other imports
-require('dotenv').config();
-
-const app = require('./app');
-const { validateEnvironment } = require('./config/environment');
-const { connectDB } = require('./config/database');
+// Load environment variables FIRST
+import { validateEnvironment } from './config/environment.js';
+import { connectDB } from './config/database.js';
+import app from './app.js';
 
 const startServer = async () => {
   try {
@@ -25,6 +23,7 @@ const startServer = async () => {
     const server = app.listen(config.port, () => {
       console.log(`✓ Server started on port ${config.port}`);
       console.log(`Environment: ${config.nodeEnv}`);
+      console.log('✓ App is ready for requests');
     });
 
     // Handle graceful shutdown
